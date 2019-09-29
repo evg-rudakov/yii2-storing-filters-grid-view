@@ -1,6 +1,7 @@
 Storing Filters GridView
 ========================
-Widget which extends by **yii\grid\GridView**. This widget can store selected filters(**queryParams**) in a GridView that will
+Widget which extends by **yii\grid\GridView** so it knows how to do the same thing as parent. 
+Also this widget can store selected filters(**queryParams**) of a GridView that will
 not be lost when you return from another page. 
 QueryParams are stored in **\Yii::$app->session**.
 
@@ -12,13 +13,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require "evg-rudakov/yii2-storing-query-params-grid-view": "^0.2"
+php composer.phar require "evg-rudakov/yii2-storing-query-params-grid-view": "^1.0"
 ```
 
 or add
 
 ```
-"evg-rudakov/yii2-storing-query-params-grid-view": "^0.2"
+"evg-rudakov/yii2-storing-query-params-grid-view": "^1.0"
 ```
 
 to the require section of your `composer.json` file.

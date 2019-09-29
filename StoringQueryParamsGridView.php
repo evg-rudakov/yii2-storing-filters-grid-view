@@ -17,7 +17,7 @@ use yii\helpers\Html;
  *      'options' => ['class' => 'hello'],
  *  ],
  *  'link' => [
- *      'text' => 'Сбросить фильтры',
+ *      'text' => 'Reset',
  *      'options' => ['class' => 'btn btn-success']
  *  ],
  *  'renderResetLink' => true,
