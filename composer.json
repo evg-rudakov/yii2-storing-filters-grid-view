@@ -1,6 +1,6 @@
 {
     "name": "evg-rudakov/yii2-storing-query-params-grid-view",
-    "description": "GridView with the ability to store queryParams to the session",
+    "description": "GridView with the ability to store queryParams to the $_SESSION",
     "type": "yii2-extension",
     "keywords": ["yii2","extension"," gridview"," save filters"," reset filters"," store filters"," filters", "save queryParams", "queryPrarms"],
     "license": "MIT",
