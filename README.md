@@ -1,8 +1,8 @@
 Storing Filters GridView
 ========================
-Widget which extends by **yii\grid\GridView**. This widget can store selected filters(`queryParams`) in a GridView that will
+Widget which extends by **yii\grid\GridView**. This widget can store selected filters(**queryParams**) in a GridView that will
 not be lost when you return from another page. 
-QueryParams are stored in `\Yii::$app->session`.
+QueryParams are stored in **\Yii::$app->session**.
 
 Installation
 ------------
