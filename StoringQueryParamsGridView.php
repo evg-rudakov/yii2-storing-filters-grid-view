@@ -131,7 +131,10 @@ class StoringQueryParamsGridView extends GridView
      */
     private function storeQueryParamsToSession()
     {
-        \Yii::$app->session->set(self::SESSION_KEY_QUERY_PARAMS, [$this->filterModelKey => \Yii::$app->request->queryParams[$this->filterModelKey]]);
+        $storeParams = \Yii::$app->session->get(self::SESSION_KEY_QUERY_PARAMS, []);
+        $storeParams[$this->filterModelKey] = \Yii::$app->request->queryParams[$this->filterModelKey];
+
+        \Yii::$app->session->set(self::SESSION_KEY_QUERY_PARAMS, $storeParams);
     }
 
     /**
@@ -141,8 +144,11 @@ class StoringQueryParamsGridView extends GridView
     private function resetSessionQueryParams()
     {
         if (!empty(\Yii::$app->session->get(self::SESSION_KEY_QUERY_PARAMS)[$this->filterModelKey])) {
-            \Yii::$app->session->set(self::SESSION_KEY_QUERY_PARAMS, [$this->filterModelKey => null]);
+            $storeParams = \Yii::$app->session->get(self::SESSION_KEY_QUERY_PARAMS, []);
+            $storeParams[$this->filterModelKey] = null;
+            \Yii::$app->session->set(self::SESSION_KEY_QUERY_PARAMS, $storeParams);
         }
+
 
         \Yii::$app->response->redirect([\Yii::$app->controller->id . '/' . $this->mainAction])->send();
         \Yii::$app->end();
