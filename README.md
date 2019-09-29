@@ -28,4 +28,7 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \evgRudakov\StoringFiltersGridView\StoringQueryParamsGridView::widget(); ?>```
+<?= \evgRudakov\StoringQueryParamsGridView\StoringQueryParamsGridView::widget([
+    'mainAction' => 'index', 
+    'useStoringQueryParams' => true]); 
+?>```
