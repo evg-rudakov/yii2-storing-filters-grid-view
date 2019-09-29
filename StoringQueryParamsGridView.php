@@ -22,10 +22,10 @@ class StoringQueryParamsGridView extends GridView
      */
     const GET_REQUEST_RESET_FILTER_PARAM = 'resetQueryParams';
     /**
-     *
-     * @var boolean
+     * Is need to user storing queryParams to $_SESSION
+     * @var bool
      */
-    public $useStoringQueryParams;
+    public $storingQueryParams = true;
     /**
      * Key for searching current model in $_SESSION data for loading queryParams of GridView
      * @var
@@ -33,25 +33,54 @@ class StoringQueryParamsGridView extends GridView
     private $filterModelKey;
 
     /**
-     * Reload beforeRun method for reset or load queryParams from $_SESSION
-    * @throws \yii\base\ExitException
-     * @return mixed
+     * Is need to render reset link
+     * @var bool
+     */
+    public $renderResetLink = true;
+
+    /**
+     * Action where there is table
+     * @var string
+     */
+    public $mainAction = 'index';
+
+    /**
+     * Array of options to custom link for reset query params
+     * @var array
+     */
+    public $link = [
+        'text' => 'Reset Filters',
+        'options' => ['class' => 'btn btn-primary'],
+    ];
+
+    /**
+     * Array of  options  to custom link container for reset query params link
+     * @var array
      */
 
-    public $mainAction = 'index';
+    public $linkContainer = [
+        'tag' => 'p',
+        'options' => [],
+    ];
+
+    /**
+     * Reload beforeRun method for reset or load queryParams from $_SESSION
+     * @throws \yii\base\ExitException
+     * @return mixed
+     */
     public function beforeRun()
     {
-            if ($this->useStoringQueryParams === false) {
-                return parent::beforeRun();
-            }
+        if ($this->storingQueryParams === false) {
+            return parent::beforeRun();
+        }
 
-            if (\Yii::$app->request->get(self::GET_REQUEST_RESET_FILTER_PARAM)) {
-                $this->resetSessionFilter();
-            }
+        if (\Yii::$app->request->get(self::GET_REQUEST_RESET_FILTER_PARAM)) {
+            $this->resetSessionQueryParams();
+        }
 
-            if (empty(\Yii::$app->request->queryParams)) {
-                $this->loadQueryParamsFromSession();
-            }
+        if (empty(\Yii::$app->request->queryParams)) {
+            $this->loadQueryParamsFromSession();
+        }
 
         return parent::beforeRun();
     }
@@ -63,29 +92,30 @@ class StoringQueryParamsGridView extends GridView
      */
     public function afterRun($result)
     {
-        if ($this->useStoringQueryParams === false) {
+        if ($this->storingQueryParams === false) {
             return parent::afterRun($result);
         }
 
         if (!empty(\Yii::$app->request->queryParams) && isset($this->filterModelKey)) {
-            $this->saveQueryParamsToSession();
+            $this->storeQueryParamsToSession();
         }
 
         return parent::afterRun($result);
     }
 
     /**
-     *
+     * Method for storing queryParams to session
      */
-    private function saveQueryParamsToSession()
+    private function storeQueryParamsToSession()
     {
         $_SESSION[self::SESSION_KEY_QUERY_PARAMS][$this->filterModelKey] = \Yii::$app->request->queryParams[$this->filterModelKey];
     }
 
     /**
+     *
      * @throws \yii\base\ExitException
      */
-    private function resetSessionFilter()
+    private function resetSessionQueryParams()
     {
         if (!empty($_SESSION[self::SESSION_KEY_QUERY_PARAMS][$this->filterModelKey])) {
             $_SESSION[self::SESSION_KEY_QUERY_PARAMS][$this->filterModelKey] = null;
@@ -102,7 +132,7 @@ class StoringQueryParamsGridView extends GridView
     {
         if (!empty(\Yii::$app->session[self::SESSION_KEY_QUERY_PARAMS][$this->filterModelKey])) {
             $queryArray[$this->filterModelKey] = \Yii::$app->session[self::SESSION_KEY_QUERY_PARAMS][$this->filterModelKey];
-            \Yii::$app->response->redirect([\Yii::$app->controller->id . '/' . $this->mainAction . http_build_query($queryArray)])->send();
+            \Yii::$app->response->redirect([\Yii::$app->controller->id . '/' . $this->mainAction . '?' . http_build_query($queryArray)])->send();
             \Yii::$app->end();
         }
     }
@@ -113,13 +143,13 @@ class StoringQueryParamsGridView extends GridView
     public function init()
     {
         if (\Yii::$app->controller->action->id === $this->mainAction) {
-            $this->useStoringQueryParams = true;
+            $this->storingQueryParams = true;
         } else {
-            $this->useStoringQueryParams = false;
+            $this->storingQueryParams = false;
         }
         $this->filterModelKey = $this->getFilterModelKey();
 
-        if ($this->useStoringQueryParams) {
+        if ($this->storingQueryParams && $this->renderResetLink) {
             $this->layout = '{resetButton}' . $this->layout;
         }
 
@@ -133,8 +163,15 @@ class StoringQueryParamsGridView extends GridView
     {
         $url = '?' . self::GET_REQUEST_RESET_FILTER_PARAM . '=1';
 
-        echo '<p>' . Html::a('Reset filters', $url,
-                ['class' => 'btn btn-primary']) . '</p>';
+        echo Html::tag(
+            $this->linkContainer['tag'],
+            Html::a(
+                $this->link['text'],
+                $url,
+                $this->link['options']
+            ),
+            $this->linkContainer['options']
+        );
     }
 
     /**
