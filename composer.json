@@ -1,0 +1,23 @@
+{
+    "name": "evg-rudakov/yii2-storing-query-params-grid-view",
+    "description": "GridView with the ability to store queryParams to the session",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"," gridview"," save filters"," reset filters"," store filters"," filters", "save queryParams", "queryPrarms"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Evgeniy Rudakov",
+            "email": "dreammago@gmail.com",
+            "role": "Developer",
+            "homepage": "https://github.com/evg-rudakov/"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EvgRudakov\\StoringFiltersGridView\\": ""
+        }
+    }
+}
