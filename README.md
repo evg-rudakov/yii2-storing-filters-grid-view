@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist evg-rudakov/yii2-storing-filters-grid-view "*"
+php composer.phar require --prefer-dist evg-rudakov/yii2-storing-query-params-grid-view "*"
 ```
 
 or add
 
 ```
-"evg-rudakov/yii2-storing-filters-grid-view": "*"
+"evg-rudakov/yii2-storing-query-params-grid-view": "*"
 ```
 
 to the require section of your `composer.json` file.
